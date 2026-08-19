@@ -1,0 +1,29 @@
+/* Zebra striping */
+.mat-mdc-row:nth-child(even) {
+  background-color: rgb(248 250 252);
+}
+
+/* Smooth hover */
+.mat-mdc-row:hover {
+  background-color: rgb(241 245 249);
+}
+
+/* Header */
+.mat-mdc-header-row {
+  height: 60px;
+}
+
+/* Body rows */
+.mat-mdc-row {
+  height: 64px;
+}
+
+/* Remove Material bottom border */
+.mat-mdc-table .mdc-data-table__row:last-child .mdc-data-table__cell {
+  border-bottom: none;
+}
+
+/* Rounded paginator */
+.mat-mdc-paginator {
+  background: transparent;
+}

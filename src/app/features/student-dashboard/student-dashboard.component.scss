@@ -1,0 +1,660 @@
+:host {
+  display: block;
+
+  min-height: 100vh;
+
+  padding: 35px;
+
+  font-family:
+    "Inter",
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  color: white;
+}
+
+.dashboard-container {
+
+  max-width: 1200px;
+
+  margin: auto;
+
+}
+
+
+
+/* Student header */
+
+.student-header {
+
+  background: rgba(255,255,255,.12);
+
+  backdrop-filter: blur(14px);
+
+  border:1px solid rgba(255,255,255,.2);
+
+  padding:35px;
+
+  border-radius:20px;
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.35);
+
+  margin-bottom:40px;
+
+}
+
+
+.student-header h1 {
+
+  color:white;
+
+  font-size:2.2rem;
+
+  text-shadow:
+    0 3px 15px rgba(0,0,0,.4);
+
+}
+
+
+
+/* Status cards */
+
+.status {
+
+  display:flex;
+
+  gap:25px;
+
+  margin-bottom:30px;
+
+}
+
+
+.status-card {
+
+  flex:1;
+
+  background:rgba(255,255,255,.12);
+
+  backdrop-filter:blur(12px);
+
+  border:1px solid rgba(255,255,255,.2);
+
+  border-radius:16px;
+
+  padding:22px;
+
+  color:white;
+
+  transition:.3s ease;
+
+}
+
+
+.status-card:hover {
+
+  transform:translateY(-3px);
+
+  box-shadow:
+    0 10px 25px rgba(15,23,42,.1);
+
+}
+
+
+.status-card span {
+
+  color:rgba(255,255,255,.7);
+
+}
+
+.status-card strong {
+
+  color:#60a5fa;
+
+}
+
+
+/* Green graduation */
+
+.status-card strong.graduated {
+
+  color:#22c55e;
+
+}
+
+
+/* Register button */
+
+.register-button {
+
+  display:block;
+
+  margin:25px auto 0;
+
+
+  padding:14px 35px;
+
+  border-radius:12px;
+
+  border:none;
+
+
+  background:#2563eb;
+
+  color:white;
+
+
+  font-size:1.05rem;
+
+  font-weight:600;
+
+
+  cursor:pointer;
+
+
+  transition:.25s ease;
+
+}
+
+
+.register-button:hover {
+
+  background:#1d4ed8;
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(37,99,235,.3);
+
+}
+
+
+.register-button:active {
+
+  transform:scale(.97);
+
+}
+
+
+
+/* Course catalog */
+
+.catalog-header h2 {
+  margin: 0;
+
+  color: #0f172a;
+  font-size: 22px;
+  font-weight: 700;
+
+  text-shadow: none;
+}
+
+
+
+/* Course cards grid */
+
+.grid {
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+  gap:25px;
+
+}
+
+
+
+/* loading/error */
+
+.spinner {
+
+  padding:40px;
+
+  text-align:center;
+
+  color:#2563eb;
+
+}
+
+
+.error {
+
+  background:#fee2e2;
+
+  color:#991b1b;
+
+  padding:20px;
+
+  border-radius:12px;
+
+}
+
+
+.selection-hint {
+
+  margin-top:30px;
+
+  padding:15px 20px;
+
+  background:#ecfeff;
+
+  border-left:5px solid #0891b2;
+
+  border-radius:10px;
+
+}
+
+
+
+/* responsive */
+
+@media(max-width:700px){
+
+  :host{
+
+    padding:15px;
+
+  }
+
+
+  .status{
+
+    flex-direction:column;
+
+  }
+
+}
+
+/* Graduation celebration */
+
+.graduation-card {
+
+  position:relative;
+
+}
+
+
+.graduated {
+
+  color:#16a34a !important;
+
+}
+
+
+.graduation-celebration {
+
+  margin-top:15px;
+
+  padding:12px;
+
+  background:#dcfce7;
+
+  border-radius:12px;
+
+  color:#166534;
+
+  animation:
+    celebration .6s ease;
+
+}
+
+
+.graduation-celebration:first-letter {
+
+  font-size:1.5rem;
+
+}
+
+
+
+@keyframes celebration {
+
+  from {
+
+    opacity:0;
+
+    transform:translateY(10px);
+
+  }
+
+
+  to {
+
+    opacity:1;
+
+    transform:translateY(0);
+
+  }
+
+}
+
+
+
+/* Enrollment notification */
+
+.enrollment-toast {
+
+  position:fixed;
+
+  right:30px;
+
+  bottom:30px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  gap:15px;
+
+
+  background:rgba(255,255,255,.95);
+
+backdrop-filter:blur(12px);
+
+  padding:18px 25px;
+
+
+  border-radius:16px;
+
+
+  border-left:6px solid #16a34a;
+
+
+  box-shadow:
+
+    0 15px 35px rgba(15,23,42,.18);
+
+
+  animation:
+
+    slideIn .4s ease;
+
+
+  z-index:1000;
+
+}
+
+
+
+.toast-icon {
+
+  font-size:1.8rem;
+
+}
+
+
+
+.enrollment-toast strong {
+
+  color:#166534;
+
+}
+
+
+.enrollment-toast p {
+
+  margin:5px 0 0;
+
+  color:#475569;
+
+}
+
+
+
+@keyframes slideIn {
+
+  from {
+
+    opacity:0;
+
+    transform:translateX(50px);
+
+  }
+
+
+  to {
+
+    opacity:1;
+
+    transform:translateX(0);
+
+  }
+
+}
+
+
+
+@media(max-width:700px){
+
+  .enrollment-toast {
+
+    left:15px;
+
+    right:15px;
+
+    bottom:15px;
+
+  }
+
+}
+
+// search 
+
+.course-search {
+  width: 100%;
+  max-width: 450px;
+  height: 44px;
+  box-sizing: border-box;
+
+  padding: 0 16px;
+  margin: 12px 0 24px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #1f2937;
+
+  font-size: 15px;
+  font-family: inherit;
+
+  outline: none;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+// 
+
+.catalog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.catalog-header h2 {
+  margin: 0;
+
+  color: #0f172a;
+  font-size: 22px;
+  font-weight: 700;
+
+  text-shadow: none;
+}
+
+.catalog-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.course-count {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 350px;
+}
+
+.search-icon {
+  position: absolute;
+
+  left: 14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  font-size: 15px;
+
+  pointer-events: none;
+}
+
+.course-search {
+  width: 100%;
+  height: 44px;
+
+  box-sizing: border-box;
+
+  padding: 0 16px 0 42px;
+
+  margin: 0;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #1f2937;
+
+  font-size: 15px;
+  font-family: inherit;
+
+  outline: none;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.course-search::placeholder {
+  color: #9ca3af;
+}
+
+.course-search:hover {
+  border-color: #9ca3af;
+}
+
+.course-search:focus {
+  outline: none;
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.25),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+}//empty block 
+.no-results {
+  grid-column: 1 / -1;
+
+  padding: 40px 20px;
+  text-align: center;
+
+  color: #6b7280;
+}
+
+.no-results-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.no-results strong {
+  display: block;
+
+  color: #374151;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.no-results p {
+  margin: 0;
+  font-size: 14px;
+}
+
+//
+.student-summary {
+  padding: 28px 32px;
+  margin-bottom: 32px;
+
+  background: #ffffff;
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+.summary-heading h1 {
+  margin: 0;
+
+  color: #0f172a;
+  font-size: 28px;
+  line-height: 1.2;
+}
+// 
+.summary-heading p {
+  margin: 8px 0 24px;
+
+  color: #64748b;
+  font-size: 14px;
+}
+
+.status {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.status-card {
+  min-height: 70px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 16px;
+
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.status-card span {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-card strong {
+  color: #2563eb;
+  font-size: 18px;
+}
+
+.status-card strong.graduated {
+  color: #16a34a;
+}
