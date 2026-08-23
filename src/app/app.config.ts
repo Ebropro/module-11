@@ -1,3 +1,6 @@
+import { jwtInterceptor } from './interceptors/jwt.interceptor';
+
+
 import {
   ApplicationConfig,
   provideZonelessChangeDetection
@@ -35,7 +38,8 @@ export const appConfig: ApplicationConfig = {
 
       withInterceptors([
         credentialsInterceptor,
-        errorInterceptor
+        errorInterceptor,
+        jwtInterceptor
       ]),
 
       withXsrfConfiguration({
