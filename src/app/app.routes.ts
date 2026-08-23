@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-
+import { roleGuard } from "./guards/role.guard";
 
 export const routes: Routes = [
   {
@@ -47,6 +47,19 @@ export const routes: Routes = [
     ),
 },
 
+{
+  path: "admin/courses",
+  loadComponent: () =>
+    import("./features/admin-course-list/admin-course-list.component")
+      .then((m) => m.AdminCourseListComponent),
+  canActivate: [roleGuard("Admin")],
+},
+{
+  path: 'unauthorized',
+  loadComponent: () =>
+    import('./features/unauthorized/unauthorized.component')
+      .then(m => m.UnauthorizedComponent),
+},
   { path: "", redirectTo: "dashboard", pathMatch: "full" },
 
 
