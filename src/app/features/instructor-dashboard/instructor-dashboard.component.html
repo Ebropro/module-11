@@ -41,13 +41,16 @@
           </div>
 
 
-          <button
-            type="button"
-            class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-            (click)="courseStore.deleteCourse(course.id)"
-          >
-            Delete
-          </button>
+@if (auth.hasRole("Admin")) {
+  <button
+    type="button"
+    class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+    (click)="courseStore.deleteCourse(course.id)"
+  >
+    Delete
+  </button>
+}
+
 
         </div>
 
