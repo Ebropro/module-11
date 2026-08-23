@@ -1,22 +1,5 @@
-// import { Component, inject, OnInit } from '@angular/core';
-// import { EnrollmentListComponent } from '../enrollment-list/enrollment-list.component';
-// import { EnrollmentSummaryComponent } from '../enrollment-summary/enrollment-summary.component';
-// import { AnalyticsChartComponent } from '../../ui/analytics-chart/analytics-chart.component';
-// import { EnrollmentStore } from '../../store/enrollment.store';
+import { AuthService } from "../../services/auth.service";
 
-// @Component({
-//   selector: 'app-instructor-dashboard',
-//   standalone: true,
-//   imports: [EnrollmentListComponent, EnrollmentSummaryComponent, AnalyticsChartComponent],
-//   templateUrl: './instructor-dashboard.component.html'
-// })
-// export class InstructorDashboardComponent implements OnInit {
-//   store = inject(EnrollmentStore);
-
-//   ngOnInit() {
-//     this.store.listenForLiveUpdates();
-//   }
-// }
 import { Component, inject, OnInit } from '@angular/core';
 
 import { EnrollmentListComponent } from '../enrollment-list/enrollment-list.component';
@@ -29,6 +12,7 @@ import { CourseStore } from '../../store/course.store';
 @Component({
   selector: 'app-instructor-dashboard',
   standalone: true,
+  
   imports: [
     EnrollmentListComponent,
     EnrollmentSummaryComponent,
@@ -37,6 +21,8 @@ import { CourseStore } from '../../store/course.store';
   templateUrl: './instructor-dashboard.component.html'
 })
 export class InstructorDashboardComponent implements OnInit {
+  
+  protected auth = inject(AuthService);
 
   enrollmentStore = inject(EnrollmentStore);
 
