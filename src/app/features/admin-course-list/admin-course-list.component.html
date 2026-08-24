@@ -1,0 +1,584 @@
+<div class="admin-page">
+
+  <!-- Header -->
+
+  <header class="page-header">
+    <div class="header-inner">
+
+```
+  <div class="header-title">
+
+    <div class="admin-icon">
+      A
+    </div>
+
+    <div>
+      <h1>Course Management</h1>
+
+      <p>
+        Manage your training catalogue
+      </p>
+    </div>
+
+  </div>
+
+  <button
+    type="button"
+    class="primary-button"
+    (click)="openCreate()"
+  >
+    <span>+</span>
+    New Course
+  </button>
+
+</div>
+```
+
+  </header>
+
+  <main class="page-content">
+
+```
+
+@if (store.updateError()) {
+
+  <div class="error-banner">
+
+```
+<div class="error-icon">
+  !
+</div>
+
+<div class="error-content">
+  <strong>Update failed</strong>
+
+  <p>
+    {{ store.updateError() }}
+  </p>
+</div>
+
+<button
+  type="button"
+  class="error-close"
+  (click)="store.clearUpdateError()"
+  aria-label="Dismiss update error"
+>
+  ×
+</button>
+```
+
+  </div>
+}
+
+@if (store.deleteError()) {
+
+  <div class="error-banner">
+
+```
+<div class="error-icon">
+  !
+</div>
+
+<div class="error-content">
+  <strong>Delete failed</strong>
+
+  <p>
+    {{ store.deleteError() }}
+  </p>
+</div>
+
+<button
+  type="button"
+  class="error-close"
+  (click)="store.clearDeleteError()"
+  aria-label="Dismiss delete error"
+>
+  ×
+</button>
+```
+
+  </div>
+}
+
+<!-- Statistics -->
+<section class="stats-grid">
+
+  <article class="stat-card">
+
+    <div>
+      <p class="stat-label">
+        Total Courses
+      </p>
+
+      <p class="stat-value">
+        {{ totalCourses() }}
+      </p>
+
+      <p class="stat-description">
+        Courses in catalogue
+      </p>
+    </div>
+
+    <div class="stat-icon indigo">
+      📚
+    </div>
+
+  </article>
+
+
+  <article class="stat-card">
+
+    <div>
+      <p class="stat-label">
+        Enrollments
+      </p>
+
+      <p class="stat-value">
+        {{ totalEnrollments() }}
+      </p>
+
+      <p class="stat-description">
+        Active student enrollments
+      </p>
+    </div>
+
+    <div class="stat-icon green">
+      👥
+    </div>
+
+  </article>
+
+
+  <article class="stat-card">
+
+    <div>
+      <p class="stat-label">
+        Available Seats
+      </p>
+
+      <p class="stat-value">
+        {{ availableSeats() }}
+      </p>
+
+      <p class="stat-description">
+        Remaining capacity
+      </p>
+    </div>
+
+    <div class="stat-icon blue">
+      ✓
+    </div>
+
+  </article>
+
+
+  <article class="stat-card">
+
+    <div>
+      <p class="stat-label">
+        Overall Capacity
+      </p>
+
+      <p class="stat-value">
+        {{ overallCapacityPercent() }}%
+      </p>
+
+      <p class="stat-description">
+        Current utilization
+      </p>
+    </div>
+
+    <div class="stat-icon orange">
+      %
+    </div>
+
+  </article>
+
+</section>
+
+
+<!-- Toolbar -->
+<section class="toolbar">
+
+  <div class="search-wrapper">
+
+    <span class="search-icon">
+      🔍
+    </span>
+
+    <input
+      type="search"
+      class="search-input"
+      placeholder="Search by course code or title..."
+      [value]="searchTerm()"
+      (input)="setSearchTerm($any($event.target).value)"
+    />
+
+  </div>
+
+  <p class="course-count">
+    Showing
+    <strong>
+      {{ filteredCourses().length }}
+    </strong>
+    courses
+  </p>
+
+</section>
+
+
+<!-- Course cards -->
+@if (filteredCourses().length > 0) {
+
+  <section class="course-grid">
+
+    @for (
+      course of filteredCourses();
+      track course.id
+    ) {
+
+      <article class="course-card">
+
+        <div class="course-accent"></div>
+
+        <div class="course-body">
+
+          <!-- Top -->
+          <div class="course-top">
+
+            <span class="course-code">
+              {{ course.code }}
+            </span>
+
+            @if (
+              course.enrollmentCount >=
+              course.maxCapacity
+            ) {
+
+              <span class="status full">
+                Full
+              </span>
+
+            } @else {
+
+              <span class="status open">
+                Open
+              </span>
+
+            }
+
+          </div>
+
+
+          <!-- Title -->
+          <h2 class="course-title">
+            {{ course.title }}
+          </h2>
+
+
+          <!-- Enrollment -->
+          <div class="enrollment-section">
+
+            <div class="enrollment-header">
+
+              <span>
+                Enrollment
+              </span>
+
+              <strong>
+                {{ course.enrollmentCount }}
+                /
+                {{ course.maxCapacity }}
+              </strong>
+
+            </div>
+
+
+            <div class="progress-track">
+
+              <div
+                class="progress-bar"
+                [class.progress-danger]="
+                  capacityPercent(course) >= 90
+                "
+                [class.progress-warning]="
+                  capacityPercent(course) >= 70 &&
+                  capacityPercent(course) < 90
+                "
+                [class.progress-good]="
+                  capacityPercent(course) < 70
+                "
+                [style.width.%]="
+                  capacityPercent(course)
+                "
+              ></div>
+
+            </div>
+
+
+            <p class="seats-remaining">
+              {{ availableSeatsFor(course) }}
+              seats remaining
+            </p>
+
+          </div>
+
+
+          <!-- Actions -->
+          <div class="course-actions">
+
+            <button
+              type="button"
+              class="edit-button"
+              (click)="
+                openEdit(
+                  course.id,
+                  course.code,
+                  course.title,
+                  course.maxCapacity
+                )
+              "
+            >
+              Edit
+            </button>
+
+    <button
+    type="button"
+    class="delete-button"
+    [disabled]="store.deletingCourseId() === course.id"
+    (click)="deleteCourse(course.id)"
+>
+    {{
+    store.deletingCourseId() === course.id
+      ? 'Deleting...'
+      : 'Delete'
+    }}
+    </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    }
+
+  </section>
+
+} @else {
+
+  <!-- Empty state -->
+  <section class="empty-state">
+
+    <div class="empty-icon">
+      🔍
+    </div>
+
+    <h2>
+      No courses found
+    </h2>
+
+    <p>
+      Try a different course name or code.
+    </p>
+
+  </section>
+
+}
+```
+
+  </main>
+
+  <!-- Create / Edit Modal -->
+
+@if (modalOpen()) {
+
+```
+<div
+  class="modal-backdrop"
+  (click)="closeModal()"
+>
+
+  <div
+    class="modal"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Modal header -->
+    <div class="modal-header">
+
+      <div>
+
+        <p>
+          Course Management
+        </p>
+
+        <h2>
+          {{
+            modalMode() === 'create'
+              ? 'Create New Course'
+              : 'Edit Course'
+          }}
+        </h2>
+
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="closeModal()"
+        [disabled]="saving()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- Modal body -->
+    <div class="modal-body">
+
+      <!-- Course code -->
+      <div class="form-field">
+
+        <label for="course-code">
+          Course Code
+        </label>
+
+        <input
+          id="course-code"
+          type="text"
+          maxlength="50"
+          [value]="formCode()"
+          [disabled]="
+            modalMode() === 'edit' ||
+            saving()
+          "
+          (input)="
+            setFormCode(
+              $any($event.target).value
+            )
+          "
+          placeholder="e.g. CSE-401"
+        />
+
+        @if (modalMode() === 'edit') {
+
+          <p class="field-help">
+            Course code cannot be changed.
+          </p>
+
+        }
+
+      </div>
+
+
+      <!-- Title -->
+      <div class="form-field">
+
+        <label for="course-title">
+          Course Title
+        </label>
+
+        <input
+          id="course-title"
+          type="text"
+          maxlength="200"
+          [value]="formTitle()"
+          [disabled]="saving()"
+          (input)="
+            setFormTitle(
+              $any($event.target).value
+            )
+          "
+          placeholder="e.g. Advanced Angular"
+        />
+
+      </div>
+
+
+      <!-- Capacity -->
+      <div class="form-field">
+
+        <label for="course-capacity">
+          Maximum Capacity
+        </label>
+
+        <input
+          id="course-capacity"
+          type="number"
+          min="1"
+          max="200"
+          [value]="formCapacity() ?? ''"
+          [disabled]="saving()"
+          (input)="
+            setFormCapacity(
+              $any($event.target).value
+            )
+          "
+        />
+
+        <p class="field-help">
+          Capacity must be between 1 and 200 students.
+        </p>
+
+      </div>
+
+
+      <!-- Error -->
+      @if (errorMessage()) {
+
+        <div class="error-message">
+
+          <span>
+            ⚠
+          </span>
+
+          <p>
+            {{ errorMessage() }}
+          </p>
+
+        </div>
+
+      }
+
+
+      <!-- Modal actions -->
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="closeModal()"
+          [disabled]="saving()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="save-button"
+          (click)="saveCourse()"
+          [disabled]="saving()"
+        >
+          {{
+            saving()
+              ? 'Saving...'
+              : modalMode() === 'create'
+                ? 'Create Course'
+                : 'Save Changes'
+          }}
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+```
+
+}
+
+</div>

@@ -99,11 +99,20 @@ export class LoginComponent {
 
     try {
       await this.authService.login({
-        username: this.username,
+        email: this.username,
         password: this.password,
       });
 
-      await this.router.navigate(['/dashboard']);
+      const role = this.authService.currentUser()?.role;
+
+if (role === 'Admin') {
+  await this.router.navigate(['/admin/courses']);
+} else if (role === 'Instructor') {
+  await this.router.navigate(['/instructor']);
+} else {
+  await this.router.navigate(['/dashboard']);
+}
+
     } catch {
       this.errorMessage.set('Invalid username or password.');
     } finally {

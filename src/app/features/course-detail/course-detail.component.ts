@@ -1,5 +1,17 @@
-import { Component, input, effect, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  input,
+  signal,
+  effect,
+} from '@angular/core';
+
 import { RouterLink } from '@angular/router';
+
+import { CourseService } from '../../services/course.service';
+import { AuthService } from '../../services/auth.service';
+import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-detail',
@@ -9,14 +21,50 @@ import { RouterLink } from '@angular/router';
   templateUrl: './course-detail.component.html',
 })
 export class CourseDetailComponent {
-  // Automatically receives the :id from the URL /courses/:id
-  // because withComponentInputBinding() is enabled in app.config.ts (Exercise 1).
-  // The name must match exactly: the route says ":id", so the input is called "id".
+
+  private courseService = inject(CourseService);
+  private authService = inject(AuthService);
+
   id = input.required<string>();
+
+  course = signal<Course | null>(null);
+  loading = signal(true);
+  notFound = signal(false);
+
+  isLoggedIn = () =>
+    this.authService.currentUser() !== null;
 
   constructor() {
     effect(() => {
-      console.log(`Loading course detail for ID: ${this.id()}`);
+      const courseId = Number(this.id());
+
+      if (!courseId) {
+        this.notFound.set(true);
+        this.loading.set(false);
+        return;
+      }
+
+      this.loading.set(true);
+      this.notFound.set(false);
+
+      this.courseService.getById(courseId).subscribe({
+        next: course => {
+          this.course.set(course);
+          this.notFound.set(course === null);
+          this.loading.set(false);
+        },
+
+        error: error => {
+          console.error(
+            'Failed to load course:',
+            error
+          );
+
+          this.course.set(null);
+          this.notFound.set(true);
+          this.loading.set(false);
+        }
+      });
     });
   }
 }
